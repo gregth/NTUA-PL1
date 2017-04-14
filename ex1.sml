@@ -1,4 +1,6 @@
-fun get_stations file =
+local
+
+    fun get_stations file =
      let
          fun next_int input =
 	     Option.valOf (TextIO.scanStream (Int.scan StringCvt.DEC) input)
@@ -36,7 +38,7 @@ fun merge (nil, ys) = ys
          else (y,m) :: merge ((x,n)::xs, ys)
 
 
-fun find_max_path (best_start, best_finish, closest_station, []) = best_start
+fun find_max_path (best_start, best_finish, closest_station, []) = best_start - best_finish
   | find_max_path (best_start, best_finish, closest_station, (height, index) :: xs) =
         let
             val curr_len = index - closest_station
@@ -47,7 +49,15 @@ fun find_max_path (best_start, best_finish, closest_station, []) = best_start
             else find_max_path (best_start, best_finish, closest_station, xs)
         end
 
-    
-
-
-
+in 
+    fun find_best_station file = 
+        let
+            val (n, stations) = get_stations file
+            val rev_head :: rev_tail = rev stations
+            val start = rev_head :: get_start (#1 (rev_head), rev_tail)
+            val finish = rev (hd stations :: get_finish (#1 (hd stations), tl stations))
+            val (height, index) :: sorted_tail = merge (start, finish)
+        in
+            find_max_path (index, index, index, sorted_tail)
+    end
+end
