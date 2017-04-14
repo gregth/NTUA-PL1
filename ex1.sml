@@ -50,7 +50,7 @@ fun find_max_path (best_start, best_finish, closest_station, []) = best_start - 
         end
 
 in 
-    fun find_best_station file = 
+    fun max_path file = 
         let
             val (n, stations) = get_stations file
             val rev_head :: rev_tail = rev stations
