@@ -34,7 +34,9 @@ local
       | merge (xs, nil) = xs
       | merge ((x,n)::xs, (y,m)::ys) =
         if x < y then (x,n) :: merge (xs, (y,m)::ys)              
-        else if n < m then (x,n) :: merge (xs, (y,m)::ys)
+        else if x = y then
+                if n < m then (x,n) :: merge (xs, (y,m)::ys)
+                else (y,m) :: merge ((x,n)::xs, ys)
              else (y,m) :: merge ((x,n)::xs, ys)
 
 
